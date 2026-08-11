@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prajwal Madame | Exploration Geologist</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            /* Premium Paper Palette */
+            --bg-paper: #F7F7F5;
+            --bg-pure: #FFFFFF;
+            --text-ink: #111111;
+            --text-graphite: #3A3A3A;
+            --text-ash: #888888;
+            --border-subtle: #E8E8E3;
+            --border-strong: #D1D1CB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-paper);
+            color: var(--text-ink);
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* The "Ink Bleed" Effect */
+        .ink-bleed {
+            color: var(--text-ink);
+            text-shadow: 0px 0px 0.8px rgba(0,0,0,0.35), 0px 0px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Subtle Light Grain Texture */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: multiply;
+        }
+
+        /* Layout */
+        .site-wrapper {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 60px 24px 120px 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 40px;
+            margin-bottom: 60px;
+        }
+
+        .nav-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-ink);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .copy-btn {
+            background: var(--bg-pure);
+            border: 1px solid var(--border-strong);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--text-ink);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--text-ink);
+            color: var(--bg-pure);
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 24px;
+            margin-left: -2px;
+        }
+
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-ink);
+            margin: 48px 0 24px 0;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .lead-text {
+            font-family: 'Newsreader', serif;
+            font-size: 1.35rem;
+            line-height: 1.6;
+            color: var(--text-graphite);
+            margin-bottom: 48px;
+        }
+
+        p {
+            font-size: 1.05rem;
+            color: var(--text-graphite);
+            margin-bottom: 24px;
+        }
+
+        .serif-quote {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--text-ink);
+            border-left: 2px solid var(--text-ink);
+            padding-left: 24px;
+            margin: 40px 0;
+        }
+
+        /* Browser Mockup / Embed */
+        .browser-mockup {
+            margin: 40px 0;
+            background: var(--bg-pure);
+            border: 1px solid var(--border-strong);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+            width: 100vw;
+            max-width: 1000px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .browser-header {
+            background: var(--bg-paper);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .browser-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-strong);
+        }
+
+        .browser-url {
+            margin: 0 auto;
+            background: var(--bg-pure);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 16px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-ash);
+            font-family: monospace;
+        }
+
+        .browser-content {
+            width: 100%;
+            height: 500px;
+            background: #10161B;
+            position: relative;
+        }
+
+        .browser-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .visit-overlay {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .visit-overlay:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Project Cards */
+        .project-card {
+            background: var(--bg-pure);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s ease;
+        }
+
+        .project-card:hover {
+            border-color: var(--text-ink);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        @media (min-width: 600px) {
+            .project-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .project-card.full-width {
+                grid-column: span 2;
+            }
+        }
+
+        /* Detailed Addendum Grids */
+        .technical-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .tech-box {
+            background: var(--bg-pure);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .tool-category {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-ink);
+            margin-bottom: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tool-list {
+            list-style: none;
+        }
+
+        .tool-list li {
+            font-size: 0.95rem;
+            color: var(--text-graphite);
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tool-list li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        /* Academic Grid */
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .subject-box {
+            background: var(--bg-pure);
+            border: 1px solid var(--border-subtle);
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .subject-grade {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            color: var(--text-ink);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .subject-name {
+            font-size: 0.85rem;
+            color: var(--text-graphite);
+            line-height: 1.4;
+        }
+
+        /* The Ledger (Work History) */
+        .ledger {
+            margin-top: 80px;
+            padding-top: 60px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .ledger-item {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .ledger-item:last-child {
+            border-bottom: none;
+        }
+
+        .ledger-date {
+            font-size: 0.85rem;
+            color: var(--text-ash);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .ledger-role {
+            font-weight: 600;
+            color: var(--text-ink);
+            margin-bottom: 4px;
+        }
+
+        .ledger-company {
+            font-size: 0.9rem;
+            color: var(--text-graphite);
+        }
+
+        @media (max-width: 768px) {
+            .browser-mockup {
+                width: 100%;
+                left: 0;
+                transform: none;
+                border-radius: 8px;
+            }
+            .ledger-item, .technical-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise-overlay"></div>
+
+    <div class="site-wrapper">
+        
+        <nav>
+            <a href="#" class="nav-brand ink-bleed">Prajwal Madame</a>
+            <div style="display: flex; gap: 16px; align-items: center;">
+                <a href="https://github.com/prajwalmadame" target="_blank" style="color: var(--text-graphite); text-decoration: none; font-size: 0.85rem; font-weight: 500;">GitHub</a>
+                <button class="copy-btn" onclick="copyEmail()">prajwalmadame4@gmail.com</button>
+            </div>
+        </nav>
+
+        <header>
+            <h1 class="ink-bleed">I secure the physical data that drives modern exploration.</h1>
+            <p class="lead-text">
+                A predictive model is only as reliable as the rocks it is built on. I bridge the gap between site operations and algorithmic targeting by protecting raw data fidelity before it ever touches software.
+            </p>
+        </header>
+
+        <article>
+            <p>
+                Algorithms do not care about the rain. During a high volume site investigation in Victoria, the drill crew pushed hard to meet their meterage targets. The core was fractured and the site conditions were deteriorating. In high velocity environments, the temptation is always to match the drillers' pace at the expense of accuracy. 
+            </p>
+            <p>
+                I chose to enforce NATA compliant QA/QC protocols instead. I recalibrated the PIDs and verified the lithological boundaries before a single core box was shipped to the lab.
+            </p>
+            <p>
+                That experience at CDR Geotechnical shifted how I view geological data. As the mining industry races toward AI driven exploration, companies are pouring millions into complex neural networks. A machine learning model ingests field data exactly as it is collected. A mislabeled soil sample or a contaminated blank at the rig translates directly into a flawed predictive model months later.
+            </p>
+
+            <div class="serif-quote ink-bleed">
+                Building downstream 3D models taught me exactly how vulnerable software is to poor field execution.
+            </div>
+
+            <p>
+                My academic background forced me to look at both sides of this equation. During my Master of Geoscience at the University of Melbourne, I spent weeks in Bermagui mapping poly deformed terranes by hand. I also studied the structural vulnerabilities of the data pipelines we use to interpret those maps. Building spatial models in Leapfrog Geo and ArcGIS made it entirely clear that you cannot fix bad sampling with good software.
+            </p>
+
+            <h2>01 / Exploration Software Suite</h2>
+            <p>
+                I needed a tangible way to flag compromised data before it infected an exploration pipeline. I built a suite of logic engines operating independently of easily distorted metrics.
+            </p>
+            <p>
+                Geochemical assay data is heavily skewed. If you use standard deviation to search for anomalies in parts per billion data, extreme outliers distort the mean and blind you to subtle mineralization patterns. 
+            </p>
+            <p>
+                Strata is a client side web application that calculates Median Absolute Deviation (MAD) statistics in real time. It allows geologists to drop raw CSV assay files directly into the browser, apply log transformations instantly, and map severe anomalies securely without relying on an external data science team. 
+            </p>
+
+            <!-- Strata Live Preview -->
+            <figure class="browser-mockup">
+                <div class="browser-header">
+                    <div class="browser-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="browser-url">prajwalmadame.github.io/Strata/</div>
+                </div>
+                <div class="browser-content">
+                    <iframe src="https://prajwalmadame.github.io/Strata/" title="Strata Logic Engine Preview"></iframe>
+                    <a href="https://prajwalmadame.github.io/Strata/" target="_blank" class="visit-overlay">Open Live App ↗</a>
+                </div>
+            </figure>
+
+            <p>
+                Geochemistry is only one variable. If downhole survey data is compromised, the resulting spatial model is fundamentally flawed. I wrote DrillCheck to isolate gyro deviations and magnetic interference. This prevents corrupted spatial coordinates from entering the database.
+            </p>
+            <p>
+                Coordinates alone do not find deposits. You need to understand the structural controls. I developed Vein3D to model and render complex geological vein networks dynamically. It allows exploration teams to visualize structural geometry directly from raw intercepts.
+            </p>
+            <p>
+                The final step is synthesizing these inputs. TargetGrid handles multi layer spatial raster blending and proximity buffering. It processes multi criteria spatial data to generate prospectivity heatmaps.
+            </p>
+
+            <div class="project-grid">
+                <a href="https://github.com/prajwalmadame/DrillCheck" target="_blank" class="project-card">
+                    <div class="tool-category ink-bleed">DrillCheck <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i></div>
+                    <p style="font-size: 0.95rem; margin-bottom: 0;">Identifies gyro deviation and magnetic interference in drill surveys to prevent spatial database corruption.</p>
+                </a>
+                <a href="https://github.com/prajwalmadame/TargetGrid" target="_blank" class="project-card">
+                    <div class="tool-category ink-bleed">TargetGrid <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i></div>
+                    <p style="font-size: 0.95rem; margin-bottom: 0;">Executes multi layer spatial raster blending and proximity buffering for algorithmic prospectivity scoring.</p>
+                </a>
+                <a href="https://github.com/prajwalmadame/Vein3D" target="_blank" class="project-card full-width">
+                    <div class="tool-category ink-bleed">Vein3D <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i></div>
+                    <p style="font-size: 0.95rem; margin-bottom: 0;">Renders complex geological vein networks dynamically to visualize structural controls on mineralization.</p>
+                </a>
+            </div>
+
+            <p>
+                This is what I bring to an exploration team. I am comfortable owning the physical site realities, from managing the chain of custody to calibrating instruments and executing structural mapping. I also understand the mathematics and software architecture required to turn those physical rocks into verified datasets.
+            </p>
+
+            <h2>02 / Technical Addendum</h2>
+            <p>
+                A breakdown of my operational stack and current competency metrics across field execution and data processing.
+            </p>
+
+            <!-- Capability Matrix (Radar Chart - Expanded to edges) -->
+            <div class="tech-box" style="margin-bottom: 24px;">
+                <div class="tool-category">Capability Matrix</div>
+                <div style="width: 100%; height: 280px; position: relative;">
+                    <canvas id="skillsRadar"></canvas>
+                </div>
+            </div>
+
+            <!-- Detailed Stack Grid -->
+            <div class="technical-grid">
+                <div class="tech-box">
+                    <div class="tool-category">Spatial & Modeling</div>
+                    <ul class="tool-list">
+                        <li>Leapfrog Geo <span class="text-ash">3D Modeling</span></li>
+                        <li>ArcGIS Pro <span class="text-ash">Spatial Pipelines</span></li>
+                        <li>QGIS <span class="text-ash">Vector Mapping</span></li>
+                        <li>MapInfo <span class="text-ash">Exploration Data</span></li>
+                    </ul>
+                </div>
+                <div class="tech-box">
+                    <div class="tool-category">Data & Analytics</div>
+                    <ul class="tool-list">
+                        <li>ESDAT <span class="text-ash">Environmental</span></li>
+                        <li>gINT <span class="text-ash">Geotechnical</span></li>
+                        <li>SQL <span class="text-ash">Database Management</span></li>
+                        <li>MAD Statistics <span class="text-ash">Logic Models</span></li>
+                    </ul>
+                </div>
+                <div class="tech-box">
+                    <div class="tool-category">Field Execution</div>
+                    <ul class="tool-list">
+                        <li>Structural Mapping <span class="text-ash">Terrane</span></li>
+                        <li>Drill Core Logging <span class="text-ash">Lithology</span></li>
+                        <li>QA/QC Protocols <span class="text-ash">NATA Standard</span></li>
+                        <li>Chain of Custody <span class="text-ash">Data Integrity</span></li>
+                    </ul>
+                </div>
+                <div class="tech-box">
+                    <div class="tool-category">Instrumentation</div>
+                    <ul class="tool-list">
+                        <li>XRF Screening <span class="text-ash">Geochemistry</span></li>
+                        <li>PID Analyzers <span class="text-ash">Gas Detection</span></li>
+                        <li>XRD / SEM / EMPA <span class="text-ash">Mineralogy</span></li>
+                        <li>Geophysical <span class="text-ash">Resistivity / EM</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>03 / Academic Breakdown</h2>
+            <p>
+                Master of Geoscience at the University of Melbourne. Core training spanned structural geology, geochronology, and the commercial frameworks surrounding applied artificial intelligence in science.
+            </p>
+            
+            <div class="subject-grid">
+                <div class="subject-box">
+                    <div class="subject-grade">H1</div>
+                    <div class="subject-name">Commercialisation of Science</div>
+                </div>
+                <div class="subject-box">
+                    <div class="subject-grade">H1</div>
+                    <div class="subject-name">Introduction to Mineralogy</div>
+                </div>
+                <div class="subject-box">
+                    <div class="subject-grade">H2A</div>
+                    <div class="subject-name">Science & AI: Legal Challenges</div>
+                </div>
+                <div class="subject-box">
+                    <div class="subject-grade">H2A</div>
+                    <div class="subject-name">Project in Geoscience</div>
+                </div>
+                <div class="subject-box">
+                    <div class="subject-grade">H2B</div>
+                    <div class="subject-name">Advanced Structural Mapping</div>
+                </div>
+                <div class="subject-box">
+                    <div class="subject-grade">H2B</div>
+                    <div class="subject-name">Geographic Information Systems</div>
+                </div>
+            </div>
+
+        </article>
+
+        <!-- The Ledger -->
+        <section class="ledger">
+            <h2 style="margin-top: 0;">04 / The Ledger</h2>
+            
+            <div class="ledger-item">
+                <div class="ledger-date">January 2025 to July 2026</div>
+                <div>
+                    <div class="ledger-role ink-bleed">Geotechnical & Exploration Consultant</div>
+                    <div class="ledger-company">CDR Geotechnical and Environmental Services</div>
+                </div>
+            </div>
+
+            <div class="ledger-item">
+                <div class="ledger-date">October 2023 to Present</div>
+                <div>
+                    <div class="ledger-role ink-bleed">Operations & Team Leader</div>
+                    <div class="ledger-company">Woolworths Supermarkets</div>
+                </div>
+            </div>
+
+            <div class="ledger-item">
+                <div class="ledger-date">February 2023 to December 2024</div>
+                <div>
+                    <div class="ledger-role ink-bleed">Master of Geoscience</div>
+                    <div class="ledger-company">The University of Melbourne</div>
+                </div>
+            </div>
+
+            <div class="ledger-item" style="margin-top: 48px; border: none;">
+                <div class="ledger-date">Status</div>
+                <div>
+                    <div class="ledger-role">Available Immediately</div>
+                    <div class="ledger-company">Full Australian Work Rights. Open to remote, national, or international relocation.</div>
+                    
+                    <div style="margin-top: 24px; display: flex; gap: 24px; flex-wrap: wrap;">
+                        <a href="mailto:prajwalmadame4@gmail.com" style="color: var(--text-ink); font-weight: 500; text-decoration: none;">Email Contact</a>
+                        <a href="https://www.linkedin.com/in/prajwal-madame-5b1071346/" target="_blank" style="color: var(--text-graphite); text-decoration: none;">LinkedIn Profile</a>
+                        <a href="https://github.com/prajwalmadame" target="_blank" style="color: var(--text-graphite); text-decoration: none;">GitHub Repositories</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Copy Email to Clipboard
+        function copyEmail() {
+            const btn = document.querySelector('.copy-btn');
+            const email = 'prajwalmadame4@gmail.com';
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = email;
+            textArea.style.position = "fixed";
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied to clipboard';
+                btn.style.background = 'var(--text-ink)';
+                btn.style.color = 'var(--bg-pure)';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = 'var(--bg-pure)';
+                    btn.style.color = 'var(--text-ink)';
+                }, 2000);
+            } catch (err) {
+                console.error('Unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Initialize Capability Radar Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('skillsRadar').getContext('2d');
+            
+            // Light theme configuration for Chart.js
+            Chart.defaults.color = '#888888';
+            Chart.defaults.font.family = 'Inter';
+            Chart.defaults.font.size = 12;
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Data QA/QC', 'Spatial Modeling', 'Geochemistry', 'Structural Mapping', 'Field Ops'],
+                    datasets: [{
+                        // Pushed to near-maximum across the board
+                        data: [100, 96, 95, 98, 100],
+                        backgroundColor: 'rgba(17, 17, 17, 0.04)',
+                        borderColor: '#111111',
+                        pointBackgroundColor: '#111111',
+                        pointBorderColor: '#FFFFFF',
+                        pointHoverBackgroundColor: '#FFFFFF',
+                        pointHoverBorderColor: '#111111',
+                        borderWidth: 1.5,
+                        pointRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.08)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.08)' },
+                            pointLabels: { 
+                                color: '#3A3A3A',
+                                font: { weight: 500 }
+                            },
+                            ticks: { display: false, min: 0, max: 100 }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
