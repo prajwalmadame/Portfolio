@@ -153,7 +153,7 @@
 
         /* Browser Mockup / Embed */
         .browser-mockup {
-            margin: 60px 0;
+            margin: 40px 0;
             background: var(--bg-pure);
             border: 1px solid var(--border-strong);
             border-radius: 12px;
@@ -231,11 +231,44 @@
             background: rgba(255,255,255,0.2);
         }
 
+        /* Project Cards */
+        .project-card {
+            background: var(--bg-pure);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s ease;
+        }
+
+        .project-card:hover {
+            border-color: var(--text-ink);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        @media (min-width: 600px) {
+            .project-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .project-card.full-width {
+                grid-column: span 2;
+            }
+        }
+
         /* Detailed Addendum Grids */
         .technical-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            gap: 24px;
             margin-top: 24px;
         }
 
@@ -252,6 +285,9 @@
             color: var(--text-ink);
             margin-bottom: 16px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .tool-list {
@@ -360,7 +396,10 @@
         
         <nav>
             <a href="#" class="nav-brand ink-bleed">Prajwal Madame</a>
-            <button class="copy-btn" onclick="copyEmail()">prajwalmadame4@gmail.com</button>
+            <div style="display: flex; gap: 16px; align-items: center;">
+                <a href="https://github.com/prajwalmadame" target="_blank" style="color: var(--text-graphite); text-decoration: none; font-size: 0.85rem; font-weight: 500;">GitHub</a>
+                <button class="copy-btn" onclick="copyEmail()">prajwalmadame4@gmail.com</button>
+            </div>
         </nav>
 
         <header>
@@ -389,9 +428,9 @@
                 My academic background forced me to look at both sides of this equation. During my Master of Geoscience at the University of Melbourne, I spent weeks in Bermagui mapping poly deformed terranes by hand. I also studied the structural vulnerabilities of the data pipelines we use to interpret those maps. Building spatial models in Leapfrog Geo and ArcGIS made it entirely clear that you cannot fix bad sampling with good software.
             </p>
 
-            <h2>01 / Engineering Strata</h2>
+            <h2>01 / Exploration Software Suite</h2>
             <p>
-                I needed a tangible way to flag compromised geochemical data before it infected an exploration pipeline. I built a logic engine that operates independently of easily distorted metrics.
+                I needed a tangible way to flag compromised data before it infected an exploration pipeline. I built a suite of logic engines operating independently of easily distorted metrics.
             </p>
             <p>
                 Geochemical assay data is heavily skewed. If you use standard deviation to search for anomalies in parts per billion data, extreme outliers distort the mean and blind you to subtle mineralization patterns. 
@@ -415,6 +454,31 @@
                     <a href="https://prajwalmadame.github.io/Strata/" target="_blank" class="visit-overlay">Open Live App ↗</a>
                 </div>
             </figure>
+
+            <p>
+                Geochemistry is only one variable. If downhole survey data is compromised, the resulting spatial model is fundamentally flawed. I wrote DrillCheck to isolate gyro deviations and magnetic interference. This prevents corrupted spatial coordinates from entering the database.
+            </p>
+            <p>
+                Coordinates alone do not find deposits. You need to understand the structural controls. I developed Vein3D to model and render complex geological vein networks dynamically. It allows exploration teams to visualize structural geometry directly from raw intercepts.
+            </p>
+            <p>
+                The final step is synthesizing these inputs. TargetGrid handles multi layer spatial raster blending and proximity buffering. It processes multi criteria spatial data to generate prospectivity heatmaps.
+            </p>
+
+            <div class="project-grid">
+                <a href="https://github.com/prajwalmadame/DrillCheck" target="_blank" class="project-card">
+                    <div class="tool-category ink-bleed">DrillCheck <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i></div>
+                    <p style="font-size: 0.95rem; margin-bottom: 0;">Identifies gyro deviation and magnetic interference in drill surveys to prevent spatial database corruption.</p>
+                </a>
+                <a href="https://github.com/prajwalmadame/TargetGrid" target="_blank" class="project-card">
+                    <div class="tool-category ink-bleed">TargetGrid <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i></div>
+                    <p style="font-size: 0.95rem; margin-bottom: 0;">Executes multi layer spatial raster blending and proximity buffering for algorithmic prospectivity scoring.</p>
+                </a>
+                <a href="https://github.com/prajwalmadame/Vein3D" target="_blank" class="project-card full-width">
+                    <div class="tool-category ink-bleed">Vein3D <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i></div>
+                    <p style="font-size: 0.95rem; margin-bottom: 0;">Renders complex geological vein networks dynamically to visualize structural controls on mineralization.</p>
+                </a>
+            </div>
 
             <p>
                 This is what I bring to an exploration team. I am comfortable owning the physical site realities, from managing the chain of custody to calibrating instruments and executing structural mapping. I also understand the mathematics and software architecture required to turn those physical rocks into verified datasets.
@@ -541,9 +605,10 @@
                     <div class="ledger-role">Available Immediately</div>
                     <div class="ledger-company">Full Australian Work Rights. Open to remote, national, or international relocation.</div>
                     
-                    <div style="margin-top: 24px; display: flex; gap: 24px;">
-                        <a href="mailto:prajwalmadame4@gmail.com" style="color: var(--text-ink); font-weight: 500;">Email Contact</a>
+                    <div style="margin-top: 24px; display: flex; gap: 24px; flex-wrap: wrap;">
+                        <a href="mailto:prajwalmadame4@gmail.com" style="color: var(--text-ink); font-weight: 500; text-decoration: none;">Email Contact</a>
                         <a href="https://www.linkedin.com/in/prajwal-madame-5b1071346/" target="_blank" style="color: var(--text-graphite); text-decoration: none;">LinkedIn Profile</a>
+                        <a href="https://github.com/prajwalmadame" target="_blank" style="color: var(--text-graphite); text-decoration: none;">GitHub Repositories</a>
                     </div>
                 </div>
             </div>
@@ -552,6 +617,9 @@
     </div>
 
     <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
         // Copy Email to Clipboard
         function copyEmail() {
             const btn = document.querySelector('.copy-btn');
@@ -598,8 +666,8 @@
                 data: {
                     labels: ['Data QA/QC', 'Spatial Modeling', 'Geochemistry', 'Structural Mapping', 'Field Ops'],
                     datasets: [{
-                        // Pushed to near-maximum across the board as requested
-                        data: [100, 95, 96, 98, 100],
+                        // Pushed to near-maximum across the board
+                        data: [100, 96, 95, 98, 100],
                         backgroundColor: 'rgba(17, 17, 17, 0.04)',
                         borderColor: '#111111',
                         pointBackgroundColor: '#111111',
